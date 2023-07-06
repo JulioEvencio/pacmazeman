@@ -1,14 +1,10 @@
 package game.resources;
 
-import java.io.IOException;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import game.main.Game;
 
@@ -59,7 +55,7 @@ public class Sound {
 			
 			clip = (Clip) AudioSystem.getLine(info);
 			clip.open(audioInputStream);
-		} catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+		} catch (Exception e) {
 			Game.exitWithError("Error loading resources");
 		}
 	}

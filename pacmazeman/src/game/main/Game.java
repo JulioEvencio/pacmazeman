@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import game.resources.Sound;
 import game.screens.Credits;
 import game.screens.MainMenu;
 import game.screens.Menu;
@@ -47,8 +48,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	private final Screen tutorial;
 	private final Screen credits;
+	
+	private boolean enableSound;
+	
+	private Sound musicNow;
+	private final Sound soundMenuLoop;
 
 	public Game() {
+		this.soundMenuLoop = new Sound("/sounds/wiphotos/menu-loop.wav");
+		this.soundMenuLoop.start();
+		
 		this.addKeyListener(this);
 
 		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -71,6 +80,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		
 		this.tutorial = new Tutorial();
 		this.credits = new Credits();
+		
+		this.enableSound = true;
+		this.musicNow = this.soundMenuLoop;
 	}
 
 	public synchronized void start() {
@@ -84,7 +96,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 		try {
 			thread.join();
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			Game.exitWithError("An error has occurred. The program will be terminated.");
 		}
 	}
@@ -92,8 +104,22 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public void updateGameState(int gameState) {
 		this.gameState = gameState;
 	}
+	
+	public void setMusicNow(Sound sound) {
+		soundMenuLoop.soundStop();
+		
+		musicNow.soundStop();
+		musicNow = sound;
+		musicNow.soundPlay();
+	}
 
 	public void tick() {
+		if (enableSound) {
+			musicNow.soundPlay();
+		} else {
+			musicNow.soundStop();
+		}
+		
 		if (gameState == Game.GAME_MENU) {
 			mainMenu.tick();
 			
@@ -171,6 +197,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		
 		if (e.getKeyCode() == KeyEvent.VK_F3) {
 			showFPS = !showFPS;
+		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_F4) {
+			enableSound = !enableSound;
 		}
 	}
 
