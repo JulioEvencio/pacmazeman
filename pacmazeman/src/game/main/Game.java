@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import game.screens.Credits;
 import game.screens.MainMenu;
 import game.screens.Menu;
 import game.screens.Screen;
@@ -45,6 +46,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	private final Menu mainMenu;
 	
 	private final Screen tutorial;
+	private final Screen credits;
 
 	public Game() {
 		this.addKeyListener(this);
@@ -68,6 +70,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		this.mainMenu = new MainMenu();
 		
 		this.tutorial = new Tutorial();
+		this.credits = new Credits();
 	}
 
 	public synchronized void start() {
@@ -127,6 +130,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			case Game.GAME_TUTORIAL:
 				tutorial.render(graphics);
 				break;
+			case Game.GAME_CREDITS:
+				credits.render(graphics);
+				break;
 		}
 
 		if (showFPS) {
@@ -157,7 +163,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				mainMenu.menuEnter();
 			}
-		} else if (gameState == Game.GAME_TUTORIAL) {
+		} else if (gameState == Game.GAME_TUTORIAL || gameState == Game.GAME_CREDITS) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				this.updateGameState(Game.GAME_MENU);
 			}
