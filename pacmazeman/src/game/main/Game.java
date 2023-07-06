@@ -14,6 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import game.screens.MainMenu;
+import game.screens.Menu;
+import game.screens.Screen;
+import game.screens.Tutorial;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 
@@ -39,7 +42,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	private final BufferedImage renderer;
 	
-	private final MainMenu mainMenu;
+	private final Menu mainMenu;
+	
+	private final Screen tutorial;
 
 	public Game() {
 		this.addKeyListener(this);
@@ -61,6 +66,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		this.gameState = Game.GAME_MENU;
 		
 		this.mainMenu = new MainMenu();
+		
+		this.tutorial = new Tutorial();
 	}
 
 	public synchronized void start() {
@@ -114,8 +121,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		graphics.drawImage(renderer, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		
 		switch (gameState) {
-			case GAME_MENU:
+			case Game.GAME_MENU:
 				mainMenu.render(graphics);
+				break;
+			case Game.GAME_TUTORIAL:
+				tutorial.render(graphics);
 				break;
 		}
 
@@ -146,6 +156,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				mainMenu.menuEnter();
+			}
+		} else if (gameState == Game.GAME_TUTORIAL) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				this.updateGameState(Game.GAME_MENU);
 			}
 		}
 		

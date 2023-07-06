@@ -6,7 +6,7 @@ import java.awt.Graphics;
 
 import game.main.Game;
 
-public abstract class Menu implements Screen {
+public abstract class Menu {
 	
 	private final int gameStateDefault;
 
@@ -84,7 +84,6 @@ public abstract class Menu implements Screen {
 		}
 	}
 
-	@Override
 	public final void render(Graphics graphics) {
 		graphics.setColor(Color.BLACK);
 		graphics.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
