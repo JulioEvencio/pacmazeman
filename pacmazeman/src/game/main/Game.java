@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import game.screens.MainMenu;
+
 public class Game extends Canvas implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = 1L;
@@ -23,11 +25,21 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
 	public static final int SCALE = 3;
+	
+	private int gameState;
+	
+	public static final int GAME_MENU = 1;
+	public static final int GAME_RUN = 2;
+	public static final int GAME_TUTORIAL = 3;
+	public static final int GAME_CREDITS = 4;
+	public static final int GAME_EXIT = 5;
 
 	private int fps;
 	private boolean showFPS;
 
 	private final BufferedImage renderer;
+	
+	private final MainMenu mainMenu;
 
 	public Game() {
 		this.addKeyListener(this);
@@ -45,6 +57,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		frame.setVisible(true);
 
 		this.renderer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		
+		this.gameState = Game.GAME_MENU;
+		
+		this.mainMenu = new MainMenu();
 	}
 
 	public synchronized void start() {
@@ -62,9 +78,19 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			Game.exitWithError("An error has occurred. The program will be terminated.");
 		}
 	}
+	
+	public void updateGameState(int gameState) {
+		this.gameState = gameState;
+		
+		System.out.println(gameState);
+	}
 
 	public void tick() {
-		// Code
+		if (gameState == Game.GAME_MENU) {
+			mainMenu.tick();
+			
+			this.updateGameState(mainMenu.getOption());
+		}
 	}
 
 	public void render() {
@@ -84,15 +110,19 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 		render.dispose();
 
-		Graphics g = bs.getDrawGraphics();
-		g.drawImage(renderer, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
+		Graphics graphics = bs.getDrawGraphics();
+		graphics.drawImage(renderer, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		
-		// Code - generic
+		switch (gameState) {
+			case GAME_MENU:
+				mainMenu.render(graphics);
+				break;
+		}
 
 		if (showFPS) {
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("arial", Font.BOLD, 20));
-			g.drawString("FPS: " + fps, (Game.WIDTH * Game.SCALE) - 100, 32);
+			graphics.setColor(Color.WHITE);
+			graphics.setFont(new Font("arial", Font.BOLD, 20));
+			graphics.drawString("FPS: " + fps, (Game.WIDTH * Game.SCALE) - 100, 32);
 		}
 
 		bs.show();
@@ -105,6 +135,20 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if (gameState == Game.GAME_MENU) {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				mainMenu.menuUp();
+			}
+			
+			if (e.getKeyCode() == KeyEvent.VK_S) {
+				mainMenu.menuDown();
+			}
+			
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				mainMenu.menuEnter();
+			}
+		}
+		
 		if (e.getKeyCode() == KeyEvent.VK_F3) {
 			showFPS = !showFPS;
 		}
