@@ -79,8 +79,6 @@ public abstract class Menu {
 			enter = false;
 			
 			this.enterLogic();
-			
-			currentOption = 0;
 		}
 	}
 
