@@ -81,8 +81,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	public void updateGameState(int gameState) {
 		this.gameState = gameState;
-		
-		System.out.println(gameState);
 	}
 
 	public void tick() {
@@ -90,6 +88,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			mainMenu.tick();
 			
 			this.updateGameState(mainMenu.getOption());
+		} else if (gameState == Game.GAME_EXIT) {
+			Game.exitGame();
 		}
 	}
 
