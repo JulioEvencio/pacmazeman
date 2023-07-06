@@ -13,7 +13,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import game.resources.Sound;
 import game.screens.Credits;
 import game.screens.MainMenu;
 import game.screens.Menu;
@@ -49,15 +48,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	private final Screen tutorial;
 	private final Screen credits;
 	
-	private boolean enableSound;
-	
-	private Sound musicNow;
-	private final Sound soundMenuLoop;
+	public static boolean enableSound;
 
 	public Game() {
-		this.soundMenuLoop = new Sound("/sounds/wiphotos/menu-loop.wav");
-		this.soundMenuLoop.start();
-		
 		this.addKeyListener(this);
 
 		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -81,8 +74,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		this.tutorial = new Tutorial();
 		this.credits = new Credits();
 		
-		this.enableSound = true;
-		this.musicNow = this.soundMenuLoop;
+		Game.enableSound = true;
 	}
 
 	public synchronized void start() {
@@ -104,22 +96,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public void updateGameState(int gameState) {
 		this.gameState = gameState;
 	}
-	
-	public void setMusicNow(Sound sound) {
-		soundMenuLoop.soundStop();
-		
-		musicNow.soundStop();
-		musicNow = sound;
-		musicNow.soundPlay();
-	}
 
 	public void tick() {
-		if (enableSound) {
-			musicNow.soundPlay();
-		} else {
-			musicNow.soundStop();
-		}
-		
 		if (gameState == Game.GAME_MENU) {
 			mainMenu.tick();
 			
