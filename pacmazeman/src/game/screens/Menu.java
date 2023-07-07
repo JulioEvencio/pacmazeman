@@ -51,17 +51,17 @@ public abstract class Menu {
 	}
 	
 	public void menuUp() {
-		this.playMusic(soundMenuChange);
+		this.setSound(soundMenuChange);
 		up = true;
 	}
 	
 	public void menuDown() {
-		this.playMusic(soundMenuChange);
+		this.setSound(soundMenuChange);
 		down = true;
 	}
 	
 	public void menuEnter() {
-		this.playMusic(soundMenuSelect);
+		this.setSound(soundMenuSelect);
 		enter = true;
 	}
 	
@@ -69,7 +69,7 @@ public abstract class Menu {
 		return selectedOption;
 	}
 	
-	private final void playMusic(Sound sound) {
+	private void setSound(Sound sound) {
 		if (Game.enableSound) {
 			sound.soundPlay();
 		} else {
@@ -77,15 +77,14 @@ public abstract class Menu {
 		}
 	}
 	
-	public final void stopMusic() {
+	private void stopSound() {
 		soundMenuLoop.soundStop();
-		soundMenuChange.soundStop();
 	}
 	
 	protected abstract void enterLogic();
 	
 	public final void tick() {
-		this.playMusic(soundMenuLoop);
+		this.setSound(soundMenuLoop);
 		
 		selectedOption = gameStateDefault;
 		
@@ -111,6 +110,7 @@ public abstract class Menu {
 			enter = false;
 			
 			this.enterLogic();
+			this.stopSound();
 		}
 	}
 
