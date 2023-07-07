@@ -77,13 +77,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		Game.enableSound = true;
 	}
 
-	public synchronized void start() {
+	private synchronized void start() {
 		thread = new Thread(this);
 		isRunning = true;
 		thread.start();
 	}
 
-	public synchronized void stop() {
+	private synchronized void stop() {
 		isRunning = false;
 
 		try {
@@ -93,11 +93,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 	}
 	
-	public void updateGameState(int gameState) {
+	private void updateGameState(int gameState) {
 		this.gameState = gameState;
 	}
 
-	public void tick() {
+	private void tick() {
 		if (gameState == Game.GAME_MENU) {
 			mainMenu.tick();
 			
@@ -107,7 +107,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 	}
 
-	public void render() {
+	private void render() {
 		BufferStrategy bs = this.getBufferStrategy();
 
 		if (bs == null) {
