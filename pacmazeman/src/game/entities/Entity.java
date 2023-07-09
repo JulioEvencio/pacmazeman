@@ -46,4 +46,36 @@ public abstract class Entity {
 
 	public abstract void render(Graphics graphics);
 
+	public void moveUp() {
+		up = true;
+	}
+
+	public void stopUp() {
+		up = false;
+	}
+
+	public void moveDown() {
+		down = true;
+	}
+
+	public void stopDown() {
+		down = false;
+	}
+
+	public void moveRight() {
+		right = true;
+	}
+
+	public void stopRight() {
+		right = false;
+	}
+
+	public void moveLeft() {
+		left = true;
+	}
+
+	public void stopLeft() {
+		left = false;
+	}
+
 }

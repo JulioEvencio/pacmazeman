@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import game.entities.Player;
+import game.scenarios.Scenario;
 import game.screens.Credits;
 import game.screens.MainMenu;
 import game.screens.Menu;
@@ -29,9 +31,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
 	public static final int SCALE = 3;
-	
+
 	private int gameState;
-	
+
 	public static final int GAME_MENU = 1;
 	public static final int GAME_RUN = 2;
 	public static final int GAME_TUTORIAL = 3;
@@ -42,13 +44,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	private boolean showFPS;
 
 	private final BufferedImage renderer;
-	
+
 	private final Menu mainMenu;
-	
+
 	private final Screen tutorial;
 	private final Screen credits;
-	
+
 	public static boolean enableSound;
+
+	private Player player;
+	private Scenario scenario;
 
 	public Game() {
 		this.addKeyListener(this);
@@ -66,15 +71,18 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		frame.setVisible(true);
 
 		this.renderer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		
+
 		this.gameState = Game.GAME_MENU;
-		
+
 		this.mainMenu = new MainMenu();
-		
+
 		this.tutorial = new Tutorial();
 		this.credits = new Credits();
-		
+
 		Game.enableSound = true;
+
+		this.player = new Player();
+		this.scenario = new Scenario(player);
 	}
 
 	private synchronized void start() {
@@ -92,15 +100,17 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			Game.exitWithError("An error has occurred. The program will be terminated.");
 		}
 	}
-	
+
 	private void updateGameState(int gameState) {
 		this.gameState = gameState;
 	}
 
 	private void tick() {
-		if (gameState == Game.GAME_MENU) {
+		if (gameState == Game.GAME_RUN) {
+			scenario.tick();
+		} else if (gameState == Game.GAME_MENU) {
 			mainMenu.tick();
-			
+
 			this.updateGameState(mainMenu.getOption());
 		} else if (gameState == Game.GAME_EXIT) {
 			Game.exitGame();
@@ -120,23 +130,25 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		render.setColor(Color.BLACK);
 		render.fillRect(0, 0, WIDTH, HEIGHT);
 
-		// Code - render
+		if (gameState == Game.GAME_RUN) {
+			scenario.render(render);
+		}
 
 		render.dispose();
 
 		Graphics graphics = bs.getDrawGraphics();
 		graphics.drawImage(renderer, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
-		
+
 		switch (gameState) {
-			case Game.GAME_MENU:
-				mainMenu.render(graphics);
-				break;
-			case Game.GAME_TUTORIAL:
-				tutorial.render(graphics);
-				break;
-			case Game.GAME_CREDITS:
-				credits.render(graphics);
-				break;
+		case Game.GAME_MENU:
+			mainMenu.render(graphics);
+			break;
+		case Game.GAME_TUTORIAL:
+			tutorial.render(graphics);
+			break;
+		case Game.GAME_CREDITS:
+			credits.render(graphics);
+			break;
 		}
 
 		if (showFPS) {
@@ -150,20 +162,24 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// Code
+		if (gameState == Game.GAME_RUN) {
+			scenario.keyPressed(e);
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (gameState == Game.GAME_MENU) {
+		if (gameState == Game.GAME_RUN) {
+			scenario.keyReleased(e);
+		} else if (gameState == Game.GAME_MENU) {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				mainMenu.menuUp();
 			}
-			
+
 			if (e.getKeyCode() == KeyEvent.VK_S) {
 				mainMenu.menuDown();
 			}
-			
+
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				mainMenu.menuEnter();
 			}
@@ -172,11 +188,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 				this.updateGameState(Game.GAME_MENU);
 			}
 		}
-		
+
 		if (e.getKeyCode() == KeyEvent.VK_F3) {
 			showFPS = !showFPS;
 		}
-		
+
 		if (e.getKeyCode() == KeyEvent.VK_F4) {
 			enableSound = !enableSound;
 		}
