@@ -3,6 +3,7 @@ package game.entities;
 import java.awt.Graphics;
 
 import game.util.Mask;
+import game.util.Sprite;
 
 public abstract class Entity {
 
@@ -19,23 +20,22 @@ public abstract class Entity {
 
 	protected double speed;
 
-	protected double life;
-	protected double maxLife;
-
 	protected final Mask maskCollision;
 
-	public Entity(int x, int y, int width, int height, double speed, double maxLife) {
+	protected final Sprite sprites;
+
+	public Entity(int x, int y, int width, int height, double speed, Mask maskCollision, Sprite sprite) {
 		this.x = x;
 		this.y = y;
+
 		this.width = width;
 		this.height = height;
 
 		this.speed = speed;
 
-		this.maxLife = maxLife;
-		this.life = this.maxLife;
+		this.maskCollision = maskCollision;
 
-		maskCollision = new Mask(x, y, width, height);
+		this.sprites = sprite;
 	}
 
 	public Mask getMaskCollision() {

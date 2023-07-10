@@ -14,7 +14,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import game.entities.Player;
+import game.entities.player.Player;
 import game.scenarios.Scenario;
 import game.screens.Credits;
 import game.screens.MainMenu;

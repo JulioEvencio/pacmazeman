@@ -3,7 +3,7 @@ package game.scenarios;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
-import game.entities.Player;
+import game.entities.player.Player;
 
 public class Scenario {
 
