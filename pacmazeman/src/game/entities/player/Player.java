@@ -29,19 +29,15 @@ public class Player extends Entity {
 	@Override
 	public void tick() {
 		if (up) {
+			this.getPlayerSprites().setDirectionUp();
 			y -= speed;
-		}
-
-		if (down) {
+		} else if (down) {
+			this.getPlayerSprites().setDirectionDown();
 			y += speed;
-		}
-
-		if (right) {
+		} else if (right) {
 			this.getPlayerSprites().setDirectionRight();
 			x += speed;
-		}
-
-		if (left) {
+		} else if (left) {
 			this.getPlayerSprites().setDirectionLeft();
 			x -= speed;
 		}

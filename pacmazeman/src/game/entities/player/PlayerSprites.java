@@ -21,11 +21,19 @@ public class PlayerSprites extends Sprite {
 		currentArraySprite = 1;
 	}
 
+	public void setDirectionDown() {
+		currentArraySprite = 2;
+	}
+
+	public void setDirectionUp() {
+		currentArraySprite = 3;
+	}
+
 	@Override
 	protected void loadSpritesheet() throws IOException {
 		Spritesheet spritesheet = new Spritesheet("/sprites/entities/player.png");
 
-		sprites = new BufferedImage[2][maxIndex];
+		sprites = new BufferedImage[4][maxIndex];
 
 		for (int i = 0; i < sprites[0].length; i++) {
 			sprites[0][i] = spritesheet.getSprite(0 + (i * 16), 0, 16, 16);
@@ -33,6 +41,14 @@ public class PlayerSprites extends Sprite {
 
 		for (int i = 0; i < sprites[1].length; i++) {
 			sprites[1][i] = spritesheet.getSprite(0 + (i * 16), 16, 16, 16);
+		}
+
+		for (int i = 0; i < sprites[2].length; i++) {
+			sprites[2][i] = spritesheet.getSprite(0 + (i * 16), 32, 16, 16);
+		}
+
+		for (int i = 0; i < sprites[3].length; i++) {
+			sprites[3][i] = spritesheet.getSprite(0 + (i * 16), 48, 16, 16);
 		}
 
 		currentArraySprite = 0;

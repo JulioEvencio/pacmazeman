@@ -29,9 +29,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	private Thread thread;
 	private boolean isRunning;
 
-	public static final int WIDTH = 240;
-	public static final int HEIGHT = 160;
-	public static final int SCALE = 3;
+	public static final int WIDTH = 720;
+	public static final int HEIGHT = 480;
+	public static final int SCALE = 1;
 
 	private int gameState;
 
