@@ -82,7 +82,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 		Game.enableSound = true;
 
-		this.player = new Player();
+		this.player = new Player(0, 0);
 		this.scenario = new Scenario(player);
 	}
 

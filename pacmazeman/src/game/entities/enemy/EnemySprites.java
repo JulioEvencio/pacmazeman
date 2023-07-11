@@ -9,8 +9,14 @@ import game.util.Sprite;
 
 public class EnemySprites extends Sprite {
 
-	public EnemySprites() throws IOException {
+	public EnemySprites(int x, int y, int width, int height) throws IOException {
 		super(5, 8);
+
+		super.x = x;
+		super.y = y;
+
+		super.width = width;
+		super.height = height;
 	}
 
 	public void setDirectionRight() {

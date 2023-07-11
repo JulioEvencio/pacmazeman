@@ -9,7 +9,7 @@ import game.util.Mask;
 public class Enemy extends Entity {
 
 	public Enemy(int x, int y) throws IOException {
-		super(x, y, 16, 16, 0.5, new Mask(x, y, 16, 16), new EnemySprites());
+		super(x, y, 16, 16, 0.5, new Mask(x, y, 16, 16), new EnemySprites(x, y, 16, 16));
 	}
 
 	private EnemySprites getEnemySprites() {

@@ -11,8 +11,8 @@ public class Player extends Entity {
 	private double life;
 	private double maxLife;
 
-	public Player() throws IOException {
-		super(50, 50, 16, 16, 1, new Mask(50, 50, 16, 16), new PlayerSprites());
+	public Player(int x, int y) throws IOException {
+		super(x, y, 16, 16, 1, new Mask(50, 50, 16, 16), new PlayerSprites(x, y, 16, 16));
 
 		this.maxLife = 1;
 		this.life = this.maxLife;
