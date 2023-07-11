@@ -42,7 +42,7 @@ public class Player extends Entity {
 			x -= speed;
 		}
 
-		sprites.updatePosition((int) x, (int) y, width, height);
+		sprites.updatePosition((int) x, (int) y);
 		sprites.tick();
 	}
 

@@ -33,11 +33,9 @@ public abstract class Sprite {
 
 	protected abstract void loadSpritesheet() throws IOException;
 
-	public void updatePosition(int x, int y, int width, int height) {
+	public void updatePosition(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
 	}
 
 	protected void updateFramesSprites() {

@@ -38,6 +38,13 @@ public abstract class Entity {
 		this.sprites = sprite;
 	}
 
+	public void updatePosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+
+		sprites.updatePosition(x, y);
+	}
+
 	public Mask getMaskCollision() {
 		return maskCollision;
 	}

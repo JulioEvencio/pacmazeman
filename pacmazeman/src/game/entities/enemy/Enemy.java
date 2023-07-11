@@ -18,7 +18,7 @@ public class Enemy extends Entity {
 
 	@Override
 	public void tick() {
-		sprites.updatePosition((int) x, (int) y, width, height);
+		sprites.updatePosition((int) x, (int) y);
 		sprites.tick();
 	}
 
