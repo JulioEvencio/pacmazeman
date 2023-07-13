@@ -14,6 +14,8 @@ import game.entities.player.Player;
 import game.itens.coin.Coin;
 import game.main.Game;
 import game.resources.Sound;
+import game.tiles.Block;
+import game.tiles.Floor;
 
 public class Scenario {
 
@@ -22,25 +24,27 @@ public class Scenario {
 
 	private final Player player;
 
-	private final List<Enemy> enemies;
-	
+	private final List<Floor> floors;
+	private final List<Block> blocks;
+
 	private final List<Coin> coins;
-	
+
+	private final List<Enemy> enemies;
+
 	private final Sound soundMenuLoop;
 
 	public Scenario(Player player) throws IOException {
 		this.soundMenuLoop = new Sound("/sounds/igorchagas/scenario.wav");
 		this.soundMenuLoop.start();
-		
+
 		this.player = player;
+		
+		this.floors = new ArrayList<>();
+		this.blocks = new ArrayList<>();
 
 		this.enemies = new ArrayList<>();
-		
+
 		this.coins = new ArrayList<>();
-		
-		this.coins.add(new Coin(80, 80));
-		this.coins.add(new Coin(450, 200));
-		this.coins.add(new Coin(200, 300));
 
 		this.loadScenario();
 	}
@@ -61,22 +65,25 @@ public class Scenario {
 
 				switch (currentPixel) {
 					case 0xFF000000:
-						// Code
+						this.blocks.add(new Block(x * 16, y * 16));
 						break;
-					case 0xFFFFFFFF:
-						// Code
+					case 0xFF00FF00:
+						this.floors.add(new Floor(x * 16, y * 16));
+						this.coins.add(new Coin(x * 16, y * 16));
 						break;
 					case 0xFF0000FF:
+						this.floors.add(new Floor(x * 16, y * 16));
 						this.enemies.add(new Enemy(x * 16, y * 16));
 						break;
 					case 0xFFFFFF00:
+						this.floors.add(new Floor(x * 16, y * 16));
 						player.updatePosition(x * 16, y * 16);
 						break;
 				}
 			}
 		}
 	}
-	
+
 	private void setSound(Sound sound) {
 		if (Game.enableSound) {
 			sound.soundPlay();
@@ -84,24 +91,24 @@ public class Scenario {
 			sound.soundStop();
 		}
 	}
-	
+
 	private void stopSound() {
 		soundMenuLoop.soundStop();
 	}
-	
+
 	public boolean gameOver() {
 		this.stopSound();
-		
+
 		return player.isDead();
 	}
 
 	public void tick() {
 		this.setSound(soundMenuLoop);
-		
+
 		for (Coin coin : coins) {
 			coin.tick();
 		}
-		
+
 		for (Enemy enemy : enemies) {
 			enemy.tick();
 		}
@@ -110,10 +117,18 @@ public class Scenario {
 	}
 
 	public void render(Graphics graphics) {
+		for (Floor floor : floors) {
+			floor.render(graphics);
+		}
+		
+		for (Block block : blocks) {
+			block.render(graphics);
+		}
+		
 		for (Coin coin : coins) {
 			coin.render(graphics);
 		}
-		
+
 		for (Enemy enemy : enemies) {
 			enemy.render(graphics);
 		}
