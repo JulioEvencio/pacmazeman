@@ -138,10 +138,19 @@ public class Scenario {
 
 	public void tick() {
 		this.setSound(soundMenuLoop);
+		
+		List<Coin> coinsRemoved = new ArrayList<>();
 
 		for (Coin coin : coins) {
 			coin.tick();
+			
+			if (coin.getMaskCollision().getRectangle().intersects(player.getMaskCollision().getRectangle())) {
+				coin.coinDead();
+				coinsRemoved.add(coin);
+			}
 		}
+		
+		coins.removeAll(coinsRemoved);
 
 		for (Enemy enemy : enemies) {
 			enemy.tick(this);
