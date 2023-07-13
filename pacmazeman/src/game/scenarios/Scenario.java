@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import game.entities.enemy.Enemy;
 import game.entities.player.Player;
+import game.itens.coin.Coin;
 import game.main.Game;
 import game.resources.Sound;
 
@@ -23,6 +24,8 @@ public class Scenario {
 
 	private final List<Enemy> enemies;
 	
+	private final List<Coin> coins;
+	
 	private final Sound soundMenuLoop;
 
 	public Scenario(Player player) throws IOException {
@@ -32,6 +35,12 @@ public class Scenario {
 		this.player = player;
 
 		this.enemies = new ArrayList<>();
+		
+		this.coins = new ArrayList<>();
+		
+		this.coins.add(new Coin(80, 80));
+		this.coins.add(new Coin(450, 200));
+		this.coins.add(new Coin(200, 300));
 
 		this.loadScenario();
 	}
@@ -89,6 +98,10 @@ public class Scenario {
 	public void tick() {
 		this.setSound(soundMenuLoop);
 		
+		for (Coin coin : coins) {
+			coin.tick();
+		}
+		
 		for (Enemy enemy : enemies) {
 			enemy.tick();
 		}
@@ -97,6 +110,10 @@ public class Scenario {
 	}
 
 	public void render(Graphics graphics) {
+		for (Coin coin : coins) {
+			coin.render(graphics);
+		}
+		
 		for (Enemy enemy : enemies) {
 			enemy.render(graphics);
 		}
