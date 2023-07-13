@@ -1,6 +1,7 @@
 package game.scenarios;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import game.entities.Entity;
 import game.entities.enemy.Enemy;
 import game.entities.player.Player;
 import game.itens.coin.Coin;
@@ -21,6 +23,11 @@ public class Scenario {
 
 	private int WIDTH;
 	private int HEIGHT;
+	
+	public final int UP;
+	public final int DOWN;
+	public final int RIGHT;
+	public final int LEFT;
 
 	private final Player player;
 
@@ -36,6 +43,11 @@ public class Scenario {
 	public Scenario(Player player) throws IOException {
 		this.soundMenuLoop = new Sound("/sounds/igorchagas/scenario.wav");
 		this.soundMenuLoop.start();
+		
+		this.UP = 1;
+		this.DOWN = 2;
+		this.RIGHT = 3;
+		this.LEFT = 4;
 
 		this.player = player;
 		
@@ -101,6 +113,28 @@ public class Scenario {
 
 		return player.isDead();
 	}
+	
+	public boolean isFree(Entity entity, int dir) {
+		Rectangle rectangle = entity.getMaskCollision().getRectangle();
+		
+		if (dir == UP) {
+			rectangle.y -= entity.getSpeed();
+		} else if (dir == DOWN) {
+			rectangle.y += entity.getSpeed();
+		} else if (dir == RIGHT) {
+			rectangle.x += entity.getSpeed();
+		} else if (dir == LEFT) {
+			rectangle.x -= entity.getSpeed();
+		}
+		
+		for (Block block : blocks) {
+			if (rectangle.intersects(block.getMaskCollision().getRectangle())) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 
 	public void tick() {
 		this.setSound(soundMenuLoop);
@@ -110,10 +144,10 @@ public class Scenario {
 		}
 
 		for (Enemy enemy : enemies) {
-			enemy.tick();
+			enemy.tick(this);
 		}
 
-		player.tick();
+		player.tick(this);
 	}
 
 	public void render(Graphics graphics) {

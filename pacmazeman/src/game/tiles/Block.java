@@ -7,12 +7,16 @@ import game.util.Mask;
 
 public class Block extends Tile {
 
-	protected final Mask maskCollision;
+	private final Mask maskCollision;
 
 	public Block(int x, int y) {
 		super(x, y, 16, 16);
 
 		maskCollision = new Mask(x, y, 16, 16);
+	}
+
+	public Mask getMaskCollision() {
+		return maskCollision;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.io.IOException;
 
 import game.entities.Entity;
+import game.scenarios.Scenario;
 import game.util.Mask;
 
 public class Player extends Entity {
@@ -26,21 +27,27 @@ public class Player extends Entity {
 		return (PlayerSprites) sprites;
 	}
 
+	private void updateMaskCollision() {
+		maskCollision.update((int) x + 3, (int) y + 3, width - 5, height - 5);
+	}
+
 	@Override
-	public void tick() {
-		if (up) {
+	public void tick(Scenario scenario) {
+		if (up && scenario.isFree(this, scenario.UP)) {
 			this.getPlayerSprites().setDirectionUp();
 			y -= speed;
-		} else if (down) {
+		} else if (down && scenario.isFree(this, scenario.DOWN)) {
 			this.getPlayerSprites().setDirectionDown();
 			y += speed;
-		} else if (right) {
+		} else if (right && scenario.isFree(this, scenario.RIGHT)) {
 			this.getPlayerSprites().setDirectionRight();
 			x += speed;
-		} else if (left) {
+		} else if (left && scenario.isFree(this, scenario.LEFT)) {
 			this.getPlayerSprites().setDirectionLeft();
 			x -= speed;
 		}
+
+		this.updateMaskCollision();
 
 		sprites.updatePosition((int) x, (int) y);
 		sprites.tick();

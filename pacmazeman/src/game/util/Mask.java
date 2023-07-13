@@ -14,12 +14,8 @@ public class Mask {
 		rectangle = new Rectangle(x, y, width, height);
 	}
 
-	private Rectangle getRectangle() {
+	public Rectangle getRectangle() {
 		return rectangle;
-	}
-
-	public boolean isColliding(Mask mask) {
-		return rectangle.intersects(mask.getRectangle());
 	}
 
 }

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.io.IOException;
 
 import game.entities.Entity;
+import game.scenarios.Scenario;
 import game.util.Mask;
 
 public class Enemy extends Entity {
@@ -17,7 +18,7 @@ public class Enemy extends Entity {
 	}
 
 	@Override
-	public void tick() {
+	public void tick(Scenario scenario) {
 		sprites.updatePosition((int) x, (int) y);
 		sprites.tick();
 	}
