@@ -11,6 +11,8 @@ import javax.imageio.ImageIO;
 
 import game.entities.enemy.Enemy;
 import game.entities.player.Player;
+import game.main.Game;
+import game.resources.Sound;
 
 public class Scenario {
 
@@ -20,8 +22,13 @@ public class Scenario {
 	private final Player player;
 
 	private final List<Enemy> enemies;
+	
+	private final Sound soundMenuLoop;
 
 	public Scenario(Player player) throws IOException {
+		this.soundMenuLoop = new Sound("/sounds/igorchagas/scenario.wav");
+		this.soundMenuLoop.start();
+		
 		this.player = player;
 
 		this.enemies = new ArrayList<>();
@@ -60,8 +67,28 @@ public class Scenario {
 			}
 		}
 	}
+	
+	private void setSound(Sound sound) {
+		if (Game.enableSound) {
+			sound.soundPlay();
+		} else {
+			sound.soundStop();
+		}
+	}
+	
+	private void stopSound() {
+		soundMenuLoop.soundStop();
+	}
+	
+	public boolean gameOver() {
+		this.stopSound();
+		
+		return player.isDead();
+	}
 
 	public void tick() {
+		this.setSound(soundMenuLoop);
+		
 		for (Enemy enemy : enemies) {
 			enemy.tick();
 		}
