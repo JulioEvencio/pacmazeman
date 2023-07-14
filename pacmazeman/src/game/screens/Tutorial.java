@@ -10,6 +10,7 @@ public class Tutorial extends Screen {
 	protected void renderString(Graphics graphics) {
 		graphics.drawString("> W, A, S, D -> use to move", Game.WIDTH * Game.SCALE / 2 - 300, 150);
 		graphics.drawString("> F3 -> to enable/disable FPS", Game.WIDTH * Game.SCALE / 2 - 300, 180);
+		graphics.drawString("> F4 -> to enable/disable musics and sounds", Game.WIDTH * Game.SCALE / 2 - 300, 210);
 	}
 
 }
