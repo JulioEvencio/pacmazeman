@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.io.IOException;
 
 import game.itens.Item;
+import game.main.Game;
 import game.resources.Sound;
 import game.util.Mask;
 
@@ -21,7 +22,11 @@ public class Coin extends Item {
 	}
 
 	public void coinDead() {
-		Coin.sound.soundPlay();
+		if (Game.enableSound) {
+			Coin.sound.soundPlay();
+		} else {
+			Coin.sound.soundStop();
+		}
 	}
 
 	private void updateMaskCollision() {
