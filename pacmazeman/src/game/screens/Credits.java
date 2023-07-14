@@ -8,17 +8,16 @@ public class Credits extends Screen {
 
 	@Override
 	protected void renderString(Graphics graphics) {
-		graphics.drawString("> Programmer: Júlio Igreja", Game.WIDTH * Game.SCALE / 2 - 300, 150);
-		graphics.drawString("> Access: https://github.com/JulioEvencio", Game.WIDTH * Game.SCALE / 2 - 300, 180);
+		graphics.drawString("Programmer:", Game.WIDTH * Game.SCALE / 2 - 300, 150);
+		graphics.drawString("    > Júlio Igreja", Game.WIDTH * Game.SCALE / 2 - 300, 180);
 		
-		graphics.drawString("> Sound - menu select: InspectorJ", Game.WIDTH * Game.SCALE / 2 - 300, 210);
-		graphics.drawString("> Access: https://freesound.org/people/InspectorJ", Game.WIDTH * Game.SCALE / 2 - 300, 240);
+		graphics.drawString("Sounds:", Game.WIDTH * Game.SCALE / 2 - 300, 210);
+		graphics.drawString("    > InspectorJ (freesound.org)     > victorium183 (freesound.org)", Game.WIDTH * Game.SCALE / 2 - 300, 240);
+		graphics.drawString("    > wi-photos (freesound.org)      > MATRIXXX_ (freesound.org)", Game.WIDTH * Game.SCALE / 2 - 300, 270);
+		graphics.drawString("    > IgorChagas (freesound.org)", Game.WIDTH * Game.SCALE / 2 - 300, 300);
 		
-		graphics.drawString("> Sound - menu change: victorium183", Game.WIDTH * Game.SCALE / 2 - 300, 270);
-		graphics.drawString("> Access: https://freesound.org/people/victorium183", Game.WIDTH * Game.SCALE / 2 - 300, 300);
-		
-		graphics.drawString("> Sound - menu loop: wi-photos", Game.WIDTH * Game.SCALE / 2 - 300, 330);
-		graphics.drawString("> Access: https://freesound.org/people/wi-photos", Game.WIDTH * Game.SCALE / 2 - 300, 360);
+		graphics.drawString("Sprites:", Game.WIDTH * Game.SCALE / 2 - 300, 330);
+		graphics.drawString("    > VladPenn (itch.io)", Game.WIDTH * Game.SCALE / 2 - 300, 360);
 	}
 
 }

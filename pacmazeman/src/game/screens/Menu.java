@@ -138,6 +138,11 @@ public abstract class Menu {
 		
 		graphics.setColor(Color.YELLOW);
 		graphics.drawString("Use W and S keys to move and ENTER to select", Game.WIDTH * Game.SCALE / 2 - 305, 414);
+		
+		graphics.setColor(Color.WHITE);
+		graphics.setFont(new Font("arial", Font.BOLD, 12));
+		
+		graphics.drawString("Source Code: https://github.com/JulioEvencio/pacmazeman", Game.WIDTH * Game.SCALE / 2 - 180, 450);
 	}
 
 }
