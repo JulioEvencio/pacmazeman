@@ -13,10 +13,6 @@ public class Enemy extends Entity {
 		super(x, y, 16, 16, 0.5, new Mask(x, y, 16, 16), new EnemySprites(x, y, 16, 16));
 	}
 
-	private EnemySprites getEnemySprites() {
-		return (EnemySprites) sprites;
-	}
-
 	@Override
 	public void tick(Scenario scenario) {
 		sprites.updatePosition((int) x, (int) y);

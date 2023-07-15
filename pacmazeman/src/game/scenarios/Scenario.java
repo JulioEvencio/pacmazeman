@@ -21,9 +21,6 @@ import game.tiles.Floor;
 
 public class Scenario {
 
-	private int WIDTH;
-	private int HEIGHT;
-	
 	public final int UP;
 	public final int DOWN;
 	public final int RIGHT;
@@ -65,9 +62,6 @@ public class Scenario {
 		BufferedImage map = ImageIO.read(this.getClass().getResource("/scenarios/scenario.png"));
 
 		int[] pixels = new int[map.getWidth() * map.getHeight()];
-
-		this.WIDTH = map.getWidth();
-		this.HEIGHT = map.getHeight();
 
 		map.getRGB(0, 0, map.getWidth(), map.getHeight(), pixels, 0, map.getWidth());
 
