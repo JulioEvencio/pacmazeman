@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 import game.entities.player.Player;
 import game.scenarios.Scenario;
 import game.screens.Credits;
+import game.screens.FinalScreen;
+import game.screens.GameOver;
 import game.screens.MainMenu;
 import game.screens.Menu;
 import game.screens.Screen;
@@ -39,7 +41,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static final int GAME_RUN = 2;
 	public static final int GAME_TUTORIAL = 3;
 	public static final int GAME_CREDITS = 4;
-	public static final int GAME_EXIT = 5;
+	public static final int GAME_GAME_OVER = 5;
+	public static final int GAME_FINAL_SCREEN = 6;
+	public static final int GAME_EXIT = 7;
 
 	private int fps;
 	private boolean showFPS;
@@ -50,6 +54,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	private final Screen tutorial;
 	private final Screen credits;
+	private final Screen gameOver;
+	private final Screen finalScreen;
 
 	public static boolean enableSound;
 
@@ -79,6 +85,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 		this.tutorial = new Tutorial();
 		this.credits = new Credits();
+		this.gameOver = new GameOver();
+		this.finalScreen = new FinalScreen();
 
 		Game.enableSound = true;
 
@@ -141,15 +149,21 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		graphics.drawImage(renderer, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 
 		switch (gameState) {
-		case Game.GAME_MENU:
-			mainMenu.render(graphics);
-			break;
-		case Game.GAME_TUTORIAL:
-			tutorial.render(graphics);
-			break;
-		case Game.GAME_CREDITS:
-			credits.render(graphics);
-			break;
+			case Game.GAME_MENU:
+				mainMenu.render(graphics);
+				break;
+			case Game.GAME_TUTORIAL:
+				tutorial.render(graphics);
+				break;
+			case Game.GAME_CREDITS:
+				credits.render(graphics);
+				break;
+			case Game.GAME_GAME_OVER:
+				gameOver.render(graphics);
+				break;
+			case Game.GAME_FINAL_SCREEN:
+				finalScreen.render(graphics);
+				break;
 		}
 
 		if (showFPS) {
@@ -184,7 +198,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				mainMenu.menuEnter();
 			}
-		} else if (gameState == Game.GAME_TUTORIAL || gameState == Game.GAME_CREDITS) {
+		} else if (gameState == Game.GAME_TUTORIAL || gameState == Game.GAME_CREDITS || gameState == Game.GAME_GAME_OVER || gameState == Game.GAME_FINAL_SCREEN) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				this.updateGameState(Game.GAME_MENU);
 			}
