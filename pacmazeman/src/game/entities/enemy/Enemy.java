@@ -1,6 +1,7 @@
 package game.entities.enemy;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.io.IOException;
 
 import game.entities.Entity;
@@ -13,8 +14,37 @@ public class Enemy extends Entity {
 		super(x, y, 16, 16, 0.5, new Mask(x, y, 16, 16), new EnemySprites(x, y, 16, 16));
 	}
 
+	private EnemySprites getEnemySprites() {
+		return (EnemySprites) sprites;
+	}
+
+	private void updateMaskCollision() {
+		maskCollision.update((int) x + 3, (int) y + 3, width - 5, height - 5);
+	}
+
+	private void algorithmFindPlayer(Scenario scenario) {
+		Rectangle maskThis = maskCollision.getRectangle();
+		Rectangle maskPlayer = scenario.player.getMaskCollision().getRectangle();
+
+		if (maskThis.x < maskPlayer.x && scenario.isFree(this, scenario.RIGHT)) {
+			x += speed;
+			this.getEnemySprites().setDirectionRight();
+		} else if (maskThis.x > maskPlayer.x && scenario.isFree(this, scenario.LEFT)) {
+			x -= speed;
+			this.getEnemySprites().setDirectionLeft();
+		} else if (maskThis.y < maskPlayer.y && scenario.isFree(this, scenario.DOWN)) {
+			y += speed;
+		} else if (maskThis.y > maskPlayer.y && scenario.isFree(this, scenario.UP)) {
+			y -= speed;
+		}
+	}
+
 	@Override
 	public void tick(Scenario scenario) {
+		this.algorithmFindPlayer(scenario);
+
+		this.updateMaskCollision();
+
 		sprites.updatePosition((int) x, (int) y);
 		sprites.tick();
 	}

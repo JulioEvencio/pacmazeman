@@ -26,7 +26,7 @@ public class Scenario {
 	public final int RIGHT;
 	public final int LEFT;
 
-	private final Player player;
+	public final Player player;
 
 	private final List<Floor> floors;
 	private final List<Block> blocks;
