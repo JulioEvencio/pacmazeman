@@ -20,7 +20,7 @@ import game.tiles.Block;
 import game.tiles.Floor;
 
 public class Scenario {
-
+	
 	public final int UP;
 	public final int DOWN;
 	public final int RIGHT;
@@ -102,10 +102,12 @@ public class Scenario {
 		soundMenuLoop.soundStop();
 	}
 
-	public boolean gameOver() {
-		this.stopSound();
-
+	public boolean isGameOver() {
 		return player.isDead();
+	}
+	
+	public boolean isFinalScreen() {
+		return coins.isEmpty();
 	}
 	
 	public boolean isFree(Entity entity, int dir) {
@@ -151,6 +153,10 @@ public class Scenario {
 		}
 
 		player.tick(this);
+		
+		if (this.isGameOver() || this.isFinalScreen()) {
+			this.stopSound();
+		}
 	}
 
 	public void render(Graphics graphics) {

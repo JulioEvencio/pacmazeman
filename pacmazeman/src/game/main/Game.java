@@ -110,6 +110,20 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 	}
 
+	private void restart() {
+		try {
+			this.player = new Player(0, 0);
+		} catch (IOException e) {
+			Game.exitWithError("Error loading resources for Player.");
+		}
+
+		try {
+			this.scenario = new Scenario(player);
+		} catch (IOException e) {
+			Game.exitWithError("Error loading resources for Map.");
+		}
+	}
+
 	private void updateGameState(int gameState) {
 		this.gameState = gameState;
 	}
@@ -117,6 +131,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	private void tick() {
 		if (gameState == Game.GAME_RUN) {
 			scenario.tick();
+
+			if (scenario.isFinalScreen()) {
+				this.updateGameState(Game.GAME_FINAL_SCREEN);
+				this.restart();
+			}
 		} else if (gameState == Game.GAME_MENU) {
 			mainMenu.tick();
 
@@ -149,21 +168,21 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		graphics.drawImage(renderer, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 
 		switch (gameState) {
-			case Game.GAME_MENU:
-				mainMenu.render(graphics);
-				break;
-			case Game.GAME_TUTORIAL:
-				tutorial.render(graphics);
-				break;
-			case Game.GAME_CREDITS:
-				credits.render(graphics);
-				break;
-			case Game.GAME_GAME_OVER:
-				gameOver.render(graphics);
-				break;
-			case Game.GAME_FINAL_SCREEN:
-				finalScreen.render(graphics);
-				break;
+		case Game.GAME_MENU:
+			mainMenu.render(graphics);
+			break;
+		case Game.GAME_TUTORIAL:
+			tutorial.render(graphics);
+			break;
+		case Game.GAME_CREDITS:
+			credits.render(graphics);
+			break;
+		case Game.GAME_GAME_OVER:
+			gameOver.render(graphics);
+			break;
+		case Game.GAME_FINAL_SCREEN:
+			finalScreen.render(graphics);
+			break;
 		}
 
 		if (showFPS) {
@@ -198,7 +217,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				mainMenu.menuEnter();
 			}
-		} else if (gameState == Game.GAME_TUTORIAL || gameState == Game.GAME_CREDITS || gameState == Game.GAME_GAME_OVER || gameState == Game.GAME_FINAL_SCREEN) {
+		} else if (gameState == Game.GAME_TUTORIAL || gameState == Game.GAME_CREDITS || gameState == Game.GAME_GAME_OVER
+				|| gameState == Game.GAME_FINAL_SCREEN) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				this.updateGameState(Game.GAME_MENU);
 			}
