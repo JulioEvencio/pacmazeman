@@ -14,6 +14,10 @@ public class Enemy extends Entity {
 		super(x, y, 16, 16, 0.5, new Mask(x, y, 16, 16), new EnemySprites(x, y, 16, 16));
 	}
 
+	private double dealDamage() {
+		return 1;
+	}
+
 	private EnemySprites getEnemySprites() {
 		return (EnemySprites) sprites;
 	}
@@ -41,6 +45,10 @@ public class Enemy extends Entity {
 
 	@Override
 	public void tick(Scenario scenario) {
+		if (scenario.player.getMaskCollision().getRectangle().intersects(this.getMaskCollision().getRectangle())) {
+			scenario.player.takeDamage(this.dealDamage());
+		}
+
 		this.algorithmFindPlayer(scenario);
 
 		this.updateMaskCollision();

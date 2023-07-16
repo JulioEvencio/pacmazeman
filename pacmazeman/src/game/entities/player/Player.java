@@ -13,10 +13,14 @@ public class Player extends Entity {
 	private double maxLife;
 
 	public Player(int x, int y) throws IOException {
-		super(x, y, 16, 16, 1, new Mask(50, 50, 16, 16), new PlayerSprites(x, y, 16, 16));
+		super(x, y, 16, 16, 1, new Mask(x, y, 16, 16), new PlayerSprites(x, y, 16, 16));
 
 		this.maxLife = 1;
 		this.life = this.maxLife;
+	}
+	
+	public void takeDamage(double damage) {
+		life -= damage;
 	}
 
 	public boolean isDead() {

@@ -132,7 +132,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		if (gameState == Game.GAME_RUN) {
 			scenario.tick();
 
-			if (scenario.isFinalScreen()) {
+			if (scenario.isGameOver()) {
+				this.updateGameState(Game.GAME_GAME_OVER);
+				this.restart();
+			} else if (scenario.isFinalScreen()) {
 				this.updateGameState(Game.GAME_FINAL_SCREEN);
 				this.restart();
 			}
