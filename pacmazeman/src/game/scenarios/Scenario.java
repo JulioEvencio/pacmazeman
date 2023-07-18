@@ -98,7 +98,7 @@ public class Scenario {
 		}
 	}
 
-	private void stopSound() {
+	public void stopSound() {
 		soundMenuLoop.soundStop();
 	}
 

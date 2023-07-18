@@ -8,11 +8,11 @@ import game.main.Game;
 import game.resources.Sound;
 
 public abstract class Menu {
-	
+
 	private final int gameStateDefault;
 
 	private final String[] options;
-	
+
 	private final int maxOption;
 
 	protected int currentOption;
@@ -21,7 +21,7 @@ public abstract class Menu {
 	private boolean up;
 	private boolean down;
 	private boolean enter;
-	
+
 	private final Sound soundMenuLoop;
 	private final Sound soundMenuChange;
 	private final Sound soundMenuSelect;
@@ -29,17 +29,17 @@ public abstract class Menu {
 	public Menu(int gameStateDefault, String[] options) {
 		this.soundMenuLoop = new Sound("/sounds/wiphotos/menu-loop.wav");
 		this.soundMenuLoop.start();
-		
+
 		this.soundMenuChange = new Sound("/sounds/victorium183/menu-change.wav");
 		this.soundMenuChange.start();
-		
+
 		this.soundMenuSelect = new Sound("/sounds/inspectorj/menu-select.wav");
 		this.soundMenuSelect.start();
 
 		this.gameStateDefault = gameStateDefault;
-		
+
 		this.options = options;
-		
+
 		this.maxOption = this.options.length - 1;
 
 		this.currentOption = 0;
@@ -49,26 +49,26 @@ public abstract class Menu {
 		down = false;
 		enter = false;
 	}
-	
+
 	public void menuUp() {
 		this.setSound(soundMenuChange);
 		up = true;
 	}
-	
+
 	public void menuDown() {
 		this.setSound(soundMenuChange);
 		down = true;
 	}
-	
+
 	public void menuEnter() {
 		this.setSound(soundMenuSelect);
 		enter = true;
 	}
-	
+
 	public int getOption() {
 		return selectedOption;
 	}
-	
+
 	private void setSound(Sound sound) {
 		if (Game.enableSound) {
 			sound.soundPlay();
@@ -76,18 +76,18 @@ public abstract class Menu {
 			sound.soundStop();
 		}
 	}
-	
-	private void stopSound() {
+
+	public void stopSound() {
 		soundMenuLoop.soundStop();
 	}
-	
+
 	protected abstract void enterLogic();
-	
+
 	public final void tick() {
 		this.setSound(soundMenuLoop);
-		
+
 		selectedOption = gameStateDefault;
-		
+
 		if (up) {
 			up = false;
 			currentOption--;
@@ -108,7 +108,7 @@ public abstract class Menu {
 
 		if (enter) {
 			enter = false;
-			
+
 			this.enterLogic();
 			this.stopSound();
 		}
@@ -124,24 +124,24 @@ public abstract class Menu {
 
 		graphics.setColor(Color.WHITE);
 		graphics.setFont(new Font("arial", Font.BOLD, 24));
-		
+
 		for (int i = 0; i < options.length; i++) {
 			graphics.setColor(Color.WHITE);
-			
+
 			if (currentOption == i) {
 				graphics.setColor(Color.YELLOW);
 				graphics.drawString("-> ", Game.WIDTH * Game.SCALE / 2 - 90, 150 + (i * 50));
 			}
-			
+
 			graphics.drawString(options[i], Game.WIDTH * Game.SCALE / 2 - 50, 150 + (i * 50));
 		}
-		
+
 		graphics.setColor(Color.YELLOW);
 		graphics.drawString("Use W and S keys to move and ENTER to select", Game.WIDTH * Game.SCALE / 2 - 305, 414);
-		
+
 		graphics.setColor(Color.WHITE);
 		graphics.setFont(new Font("arial", Font.BOLD, 12));
-		
+
 		graphics.drawString("Source Code: https://github.com/JulioEvencio/pacmazeman", Game.WIDTH * Game.SCALE / 2 - 180, 450);
 	}
 

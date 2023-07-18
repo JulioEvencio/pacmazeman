@@ -21,6 +21,7 @@ import game.screens.FinalScreen;
 import game.screens.GameOver;
 import game.screens.MainMenu;
 import game.screens.Menu;
+import game.screens.Pause;
 import game.screens.Screen;
 import game.screens.Tutorial;
 
@@ -39,11 +40,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	public static final int GAME_MENU = 1;
 	public static final int GAME_RUN = 2;
-	public static final int GAME_TUTORIAL = 3;
-	public static final int GAME_CREDITS = 4;
-	public static final int GAME_GAME_OVER = 5;
-	public static final int GAME_FINAL_SCREEN = 6;
-	public static final int GAME_EXIT = 7;
+	public static final int GAME_RESTART = 3;
+	public static final int GAME_PAUSE = 4;
+	public static final int GAME_TUTORIAL = 5;
+	public static final int GAME_CREDITS = 6;
+	public static final int GAME_GAME_OVER = 7;
+	public static final int GAME_FINAL_SCREEN = 8;
+	public static final int GAME_EXIT = 9;
 
 	private int fps;
 	private boolean showFPS;
@@ -51,6 +54,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	private final BufferedImage renderer;
 
 	private final Menu mainMenu;
+	private final Menu pause;
 
 	private final Screen tutorial;
 	private final Screen credits;
@@ -82,6 +86,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		this.gameState = Game.GAME_MENU;
 
 		this.mainMenu = new MainMenu();
+		this.pause = new Pause();
 
 		this.tutorial = new Tutorial();
 		this.credits = new Credits();
@@ -125,6 +130,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	}
 
 	private void updateGameState(int gameState) {
+		if (gameState == Game.GAME_RESTART) {
+			this.restart();
+			
+			gameState = Game.GAME_RUN;
+		}
+		
 		this.gameState = gameState;
 	}
 
@@ -143,6 +154,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			mainMenu.tick();
 
 			this.updateGameState(mainMenu.getOption());
+		} else if (gameState == Game.GAME_PAUSE) {
+			pause.tick();
+
+			this.updateGameState(pause.getOption());
 		} else if (gameState == Game.GAME_EXIT) {
 			Game.exitGame();
 		}
@@ -171,21 +186,24 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		graphics.drawImage(renderer, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 
 		switch (gameState) {
-		case Game.GAME_MENU:
-			mainMenu.render(graphics);
-			break;
-		case Game.GAME_TUTORIAL:
-			tutorial.render(graphics);
-			break;
-		case Game.GAME_CREDITS:
-			credits.render(graphics);
-			break;
-		case Game.GAME_GAME_OVER:
-			gameOver.render(graphics);
-			break;
-		case Game.GAME_FINAL_SCREEN:
-			finalScreen.render(graphics);
-			break;
+			case Game.GAME_MENU:
+				mainMenu.render(graphics);
+				break;
+			case Game.GAME_PAUSE:
+				pause.render(graphics);
+				break;
+			case Game.GAME_TUTORIAL:
+				tutorial.render(graphics);
+				break;
+			case Game.GAME_CREDITS:
+				credits.render(graphics);
+				break;
+			case Game.GAME_GAME_OVER:
+				gameOver.render(graphics);
+				break;
+			case Game.GAME_FINAL_SCREEN:
+				finalScreen.render(graphics);
+				break;
 		}
 
 		if (showFPS) {
@@ -208,6 +226,28 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public void keyReleased(KeyEvent e) {
 		if (gameState == Game.GAME_RUN) {
 			scenario.keyReleased(e);
+			
+			if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				scenario.stopSound();
+				this.updateGameState(Game.GAME_PAUSE);
+			}
+		} else if (gameState == Game.GAME_PAUSE) {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				pause.menuUp();
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_S) {
+				pause.menuDown();
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				pause.menuEnter();
+			}
+			
+			if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				pause.stopSound();
+				this.updateGameState(Game.GAME_RUN);
+			}
 		} else if (gameState == Game.GAME_MENU) {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				mainMenu.menuUp();
@@ -220,8 +260,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				mainMenu.menuEnter();
 			}
-		} else if (gameState == Game.GAME_TUTORIAL || gameState == Game.GAME_CREDITS || gameState == Game.GAME_GAME_OVER
-				|| gameState == Game.GAME_FINAL_SCREEN) {
+		} else if (gameState == Game.GAME_TUTORIAL || gameState == Game.GAME_CREDITS || gameState == Game.GAME_GAME_OVER || gameState == Game.GAME_FINAL_SCREEN) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				this.updateGameState(Game.GAME_MENU);
 			}
