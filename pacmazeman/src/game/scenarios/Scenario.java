@@ -79,10 +79,12 @@ public class Scenario {
 						break;
 					case 0xFF0000FF:
 						this.floors.add(new Floor(x * 16, y * 16));
+						this.coins.add(new Coin(x * 16, y * 16));
 						this.enemies.add(new Enemy(x * 16, y * 16));
 						break;
 					case 0xFFFFFF00:
 						this.floors.add(new Floor(x * 16, y * 16));
+						this.coins.add(new Coin(x * 16, y * 16));
 						player.updatePosition(x * 16, y * 16);
 						break;
 				}
