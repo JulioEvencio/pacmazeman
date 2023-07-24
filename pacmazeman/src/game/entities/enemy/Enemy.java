@@ -13,11 +13,11 @@ import game.scenarios.Scenario;
 import game.util.Mask;
 
 public class Enemy extends Entity {
-	
+
 	private List<Node> path;
 
-	public Enemy(int x, int y) throws IOException {
-		super(x, y, 16, 16, 0.5, new Mask(x, y, 16, 16), new EnemySprites(x, y, 16, 16));
+	public Enemy(int x, int y, double speed) throws IOException {
+		super(x, y, 16, 16, speed, new Mask(x, y, 16, 16), new EnemySprites(x, y, 16, 16));
 	}
 
 	private double dealDamage() {
@@ -36,42 +36,36 @@ public class Enemy extends Entity {
 		Rectangle maskThis = maskCollision.getRectangle();
 		Rectangle maskPlayer = scenario.player.getMaskCollision().getRectangle();
 
-		if (maskThis.x < maskPlayer.x && scenario.isFree(this, scenario.RIGHT)) {
-			x += speed;
-			this.getEnemySprites().setDirectionRight();
-		} else if (maskThis.x > maskPlayer.x && scenario.isFree(this, scenario.LEFT)) {
-			x -= speed;
-			this.getEnemySprites().setDirectionLeft();
-		} else if (maskThis.y < maskPlayer.y && scenario.isFree(this, scenario.DOWN)) {
-			y += speed;
-		} else if (maskThis.y > maskPlayer.y && scenario.isFree(this, scenario.UP)) {
-			y -= speed;
+		if (path == null || path.size() == 0) {
+			Vector2i start = new Vector2i((int) maskThis.x / 16, (int) maskThis.y / 16);
+			Vector2i end = new Vector2i((int) maskPlayer.x / 16, (int) maskPlayer.y / 16);
+
+			path = AStar.findPath(scenario, start, end);
 		}
+
+		this.followPath(path);
 	}
-	
-	public void followPath(List<Node> path) {
+
+	private void followPath(List<Node> path) {
+		Rectangle maskThis = maskCollision.getRectangle();
+		
 		if (path != null) {
 			if (path.size() > 0) {
 				Vector2i target = path.get(path.size() - 1).tile;
-				
-				// xprev = x;
-				// yprev = y;
-				
-				if (x < target.x * 16) {
-					// x += speed;
-					x++;
-				} else if (x > target.x * 16) {
-					// x -= speed;
-					x--;
-				} else if (y < target.y * 16) {
-					// y += speed;
-					y++;
-				} else if (y > target.y * 16) {
-					// y -= speed;
-					y--;
+
+				if (maskThis.x < target.x * 16) {
+					x += speed;
+					this.getEnemySprites().setDirectionRight();
+				} else if (maskThis.x > target.x * 16) {
+					x -= speed;
+					this.getEnemySprites().setDirectionLeft();
+				} else if (maskThis.y < target.y * 16) {
+					y += speed;
+				} else if (maskThis.y > target.y * 16) {
+					y -= speed;
 				}
-				
-				if (x == target.x * 16 && y == target.y * 16) {
+
+				if (maskThis.x == target.x * 16 && maskThis.y == target.y * 16) {
 					path.remove(path.size() - 1);
 				}
 			}
@@ -84,15 +78,7 @@ public class Enemy extends Entity {
 			scenario.player.takeDamage(this.dealDamage());
 		}
 
-		// this.algorithmFindPlayer(scenario);
-		if (path == null || path.size() == 0) {
-			Vector2i start = new Vector2i((int) x / 16, (int) y / 16);
-			Vector2i end = new Vector2i((int) scenario.player.getMaskCollision().getRectangle().x / 16, (int) scenario.player.getMaskCollision().getRectangle().y / 16);
-			
-			path = AStar.findPath(scenario, start, end);
-		}
-		
-		this.followPath(path);
+		this.algorithmFindPlayer(scenario);
 
 		this.updateMaskCollision();
 

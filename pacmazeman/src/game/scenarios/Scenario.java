@@ -23,9 +23,8 @@ import game.tiles.Tile;
 public class Scenario {
 	
 	public static Tile[] tiles;
+	
 	public static int WIDTH;
-	public static int HEIGHT;
-	public static final int TILE_SIZE = 16;
 	
 	public final int UP;
 	public final int DOWN;
@@ -69,9 +68,9 @@ public class Scenario {
 
 		int[] pixels = new int[map.getWidth() * map.getHeight()];
 		
-		WIDTH = map.getWidth();
-		HEIGHT = map.getHeight();
 		tiles = new Tile[map.getWidth() * map.getHeight()];
+		
+		WIDTH = map.getWidth();
 
 		map.getRGB(0, 0, map.getWidth(), map.getHeight(), pixels, 0, map.getWidth());
 
@@ -96,7 +95,21 @@ public class Scenario {
 					case 0xFF0000FF:
 						this.floors.add(new Floor(x * 16, y * 16));
 						this.coins.add(new Coin(x * 16, y * 16));
-						this.enemies.add(new Enemy(x * 16, y * 16));
+						
+						
+						double speed = 0;
+						
+						if (this.enemies.isEmpty()) {
+							speed = 0.8;
+						} else if (this.enemies.size() == 1) {
+							speed = 0.7;
+						} else if (this.enemies.size() == 2) {
+							speed = 0.6;
+						} else {
+							speed = 0.5;
+						}
+						
+						this.enemies.add(new Enemy(x * 16, y * 16, speed));
 						break;
 					case 0xFFFFFF00:
 						this.floors.add(new Floor(x * 16, y * 16));
