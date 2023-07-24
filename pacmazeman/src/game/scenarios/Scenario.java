@@ -18,8 +18,14 @@ import game.main.Game;
 import game.resources.Sound;
 import game.tiles.Block;
 import game.tiles.Floor;
+import game.tiles.Tile;
 
 public class Scenario {
+	
+	public static Tile[] tiles;
+	public static int WIDTH;
+	public static int HEIGHT;
+	public static final int TILE_SIZE = 16;
 	
 	public final int UP;
 	public final int DOWN;
@@ -62,6 +68,10 @@ public class Scenario {
 		BufferedImage map = ImageIO.read(this.getClass().getResource("/scenarios/scenario.png"));
 
 		int[] pixels = new int[map.getWidth() * map.getHeight()];
+		
+		WIDTH = map.getWidth();
+		HEIGHT = map.getHeight();
+		tiles = new Tile[map.getWidth() * map.getHeight()];
 
 		map.getRGB(0, 0, map.getWidth(), map.getHeight(), pixels, 0, map.getWidth());
 
@@ -71,10 +81,16 @@ public class Scenario {
 
 				switch (currentPixel) {
 					case 0xFF000000:
+						Block block = new Block(x * 16, y * 16);
+						
+						tiles[x + (y * WIDTH)] = block;
 						this.blocks.add(new Block(x * 16, y * 16));
 						break;
 					case 0xFF00FF00:
-						this.floors.add(new Floor(x * 16, y * 16));
+						Floor floor = new Floor(x * 16, y * 16);
+						
+						tiles[x + (y * WIDTH)] = floor;
+						this.floors.add(floor);
 						this.coins.add(new Coin(x * 16, y * 16));
 						break;
 					case 0xFF0000FF:
