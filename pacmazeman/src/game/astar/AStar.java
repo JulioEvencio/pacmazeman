@@ -13,7 +13,7 @@ public class AStar {
 
 	public static double lastTime = System.currentTimeMillis();
 
-	private static Comparator<Node> nodeSorter = new Comparator<>() {
+	private static Comparator<Node> nodeSorter = new Comparator<Node>() {
 		@Override
 		public int compare(Node arg0, Node arg1) {
 			if (arg1.fCost < arg0.fCost) {
