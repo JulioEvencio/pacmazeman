@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import game.main.Game;
-import game.resources.Sound;
+import game.resources.Audio;
 
 public abstract class Menu {
 
@@ -22,19 +22,14 @@ public abstract class Menu {
 	private boolean down;
 	private boolean enter;
 
-	private final Sound soundMenuLoop;
-	private final Sound soundMenuChange;
-	private final Sound soundMenuSelect;
+	private final Audio soundMenuLoop;
+	private final Audio soundMenuChange;
+	private final Audio soundMenuSelect;
 
 	public Menu(int gameStateDefault, String[] options) {
-		this.soundMenuLoop = new Sound("/sounds/wiphotos/menu-loop.wav");
-		this.soundMenuLoop.start();
-
-		this.soundMenuChange = new Sound("/sounds/victorium183/menu-change.wav");
-		this.soundMenuChange.start();
-
-		this.soundMenuSelect = new Sound("/sounds/inspectorj/menu-select.wav");
-		this.soundMenuSelect.start();
+		this.soundMenuLoop = new Audio("/sounds/wiphotos/menu-loop.wav");
+		this.soundMenuChange = new Audio("/sounds/victorium183/menu-change.wav");
+		this.soundMenuSelect = new Audio("/sounds/inspectorj/menu-select.wav");
 
 		this.gameStateDefault = gameStateDefault;
 
@@ -69,16 +64,16 @@ public abstract class Menu {
 		return selectedOption;
 	}
 
-	private void setSound(Sound sound) {
+	private void setSound(Audio sound) {
 		if (Game.enableSound) {
-			sound.soundPlay();
+			sound.play();
 		} else {
-			sound.soundStop();
+			sound.stop();
 		}
 	}
 
 	public void stopSound() {
-		soundMenuLoop.soundStop();
+		soundMenuLoop.stop();
 	}
 
 	protected abstract void enterLogic();

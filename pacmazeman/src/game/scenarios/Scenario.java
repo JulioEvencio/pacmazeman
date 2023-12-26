@@ -15,7 +15,7 @@ import game.entities.enemy.Enemy;
 import game.entities.player.Player;
 import game.itens.coin.Coin;
 import game.main.Game;
-import game.resources.Sound;
+import game.resources.Audio;
 import game.tiles.Block;
 import game.tiles.Floor;
 import game.tiles.Tile;
@@ -40,11 +40,10 @@ public class Scenario {
 
 	private final List<Enemy> enemies;
 
-	private final Sound soundMenuLoop;
+	private final Audio soundMenuLoop;
 
 	public Scenario(Player player) throws IOException {
-		this.soundMenuLoop = new Sound("/sounds/igorchagas/scenario.wav");
-		this.soundMenuLoop.start();
+		this.soundMenuLoop = new Audio("/sounds/igorchagas/scenario.wav");
 		
 		this.UP = 1;
 		this.DOWN = 2;
@@ -121,16 +120,16 @@ public class Scenario {
 		}
 	}
 
-	private void setSound(Sound sound) {
+	private void setSound(Audio sound) {
 		if (Game.enableSound) {
-			sound.soundPlay();
+			sound.play();
 		} else {
-			sound.soundStop();
+			sound.stop();
 		}
 	}
 
 	public void stopSound() {
-		soundMenuLoop.soundStop();
+		soundMenuLoop.stop();
 	}
 
 	public boolean isGameOver() {

@@ -5,27 +5,26 @@ import java.io.IOException;
 
 import game.itens.Item;
 import game.main.Game;
-import game.resources.Sound;
+import game.resources.Audio;
 import game.util.Mask;
 
 public class Coin extends Item {
 
-	private static Sound sound = null;
+	private static Audio sound = null;
 
 	public Coin(int x, int y) throws IOException {
 		super(x, y, 16, 16, new Mask(x, y, 16, 16), new CoinSprites(x, y, 16, 16));
 
 		if (Coin.sound == null) {
-			Coin.sound = new Sound("/sounds/matrixxx/coin.wav");
-			Coin.sound.start();
+			Coin.sound = new Audio("/sounds/matrixxx/coin.wav");
 		}
 	}
 
 	public void coinDead() {
 		if (Game.enableSound) {
-			Coin.sound.soundPlay();
+			Coin.sound.play();
 		} else {
-			Coin.sound.soundStop();
+			Coin.sound.stop();
 		}
 	}
 
